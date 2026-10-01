@@ -10,12 +10,12 @@ src/
 ├── constants/
 │   └── routes.ts          APP_ROUTES: `path` (segment for createRoute) + `navigate` (full URL)
 ├── routing/
-│   ├── routeConfig.tsx    createRoutes(parent) — EXPOSED as `wp_portfolio/routes`
-│   ├── lazyComponents.ts  React.lazy() page imports (one chunk per page)
+│   ├── route-config.tsx   createRoutes(parent) — EXPOSED as `wp_portfolio/routes`
+│   ├── lazy-components.ts React.lazy() page imports (one chunk per page)
 │   └── index.tsx          standalone router; only used when this repo runs on its own
 ├── pages/
-│   ├── PortfolioOverview.tsx
-│   └── PortfolioDetail.tsx
+│   ├── portfolio-overview.tsx
+│   └── portfolio-detail.tsx
 ├── index.tsx              entry: renders routing/index.tsx
 └── remotes.d.ts           types for what this repo consumes
 ```
@@ -24,7 +24,7 @@ src/
 
 | Key | File | Export | Consumed by |
 |---|---|---|---|
-| `./routes` | `src/routing/routeConfig.tsx` | `createRoutes<TParent extends AnyRoute>(parent: TParent)` → readonly tuple of routes | `wp_layout` (`src/routing/remoteRoutes.tsx`) |
+| `./routes` | `src/routing/route-config.tsx` | `createRoutes<TParent extends AnyRoute>(parent: TParent)` → readonly tuple of routes | `wp_layout` (`src/routing/remote-routes.tsx`) |
 
 `createRoutes` builds this module's routes as children of whatever `parent` it gets:
 
@@ -41,8 +41,8 @@ them.
 
 | URL | Constant | Page | Params | Search |
 |---|---|---|---|---|
-| `/portfolio` | `APP_ROUTES.PORTFOLIO` | `pages/PortfolioOverview.tsx` | — | `tab`: `overview \| holdings \| performance` (default `overview`) |
-| `/portfolio/$id` | `APP_ROUTES.PORTFOLIO_DETAIL` | `pages/PortfolioDetail.tsx` | `id: string` | — |
+| `/portfolio` | `APP_ROUTES.PORTFOLIO` | `pages/portfolio-overview.tsx` | — | `tab`: `overview \| holdings \| performance` (default `overview`) |
+| `/portfolio/$id` | `APP_ROUTES.PORTFOLIO_DETAIL` | `pages/portfolio-detail.tsx` | `id: string` | — |
 
 Standalone only: `/` redirects to `/portfolio`.
 
@@ -77,11 +77,11 @@ second copy of React or the router breaks hooks and context at runtime.
 ## Adding a route
 
 1. Add `{ path, navigate }` to `APP_ROUTES` in `src/constants/routes.ts`.
-2. Add the page to `src/pages/` and a lazy import to `src/routing/lazyComponents.ts`.
+2. Add the page to `src/pages/` and a lazy import to `src/routing/lazy-components.ts`.
 3. Add a `createRoute({ getParentRoute: () => parent, ... })` in `createRoutes` and include it in
    the returned tuple.
 4. Add the URL to `routing.routes` in `.claude/docs/wealth-pulse-config.json`. The host needs no
-   change unless the route belongs in the sidebar (`wp_layout/src/constants/menuItems.ts`).
+   change unless the route belongs in the sidebar (`wp_layout/src/constants/menu-items.ts`).
 
 ## Run
 

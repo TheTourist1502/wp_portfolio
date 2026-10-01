@@ -2,7 +2,7 @@ import { type AnyRoute, createRoute } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 
 import { APP_ROUTES, PORTFOLIO_TABS, type PortfolioTab } from '../constants/routes';
-import { lazyComponents } from './lazyComponents';
+import { lazyComponents } from './lazy-components';
 
 const isTab = (value: unknown): value is PortfolioTab =>
   PORTFOLIO_TABS.includes(value as PortfolioTab);
